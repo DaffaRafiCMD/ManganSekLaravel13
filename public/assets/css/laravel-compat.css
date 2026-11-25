@@ -1,0 +1,2 @@
+.menu .logout-link {display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-radius:6px;background:transparent;font:inherit;font-size:14px;color:inherit;cursor:pointer;}
+.menu .logout-link:hover{background:var(--gray);}

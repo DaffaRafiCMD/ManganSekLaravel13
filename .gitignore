@@ -1,0 +1,70 @@
+# Environment and credentials
+.env
+.env.*
+!.env.example
+/auth.json
+/storage/*.key
+
+# Dependencies
+/vendor
+/node_modules
+
+# Laravel generated files
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/pail
+/storage/logs/*.log
+/bootstrap/cache/*.php
+
+# AI development tools
+/.codex
+/.cursor/
+/.claude/
+/CLAUDE.md
+/AGENTS.md
+/GEMINI.md
+/.github/copilot-instructions.md
+
+# IDE and editor settings
+/.idea
+/.nova
+/.vscode
+/.zed
+.phpactor.json
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Testing and cache
+.phpunit.result.cache
+/.phpunit.cache
+/coverage
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Backup and archive files
+*.zip
+*.rar
+*.7z
+/backup/
+/backups/
+
+# Local database
+/database/*.sqlite
+/database/*.sqlite-*
+
+# Homestead
+Homestead.json
+Homestead.yaml
