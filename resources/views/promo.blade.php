@@ -10,6 +10,9 @@
       <p class="sub">Diskon &amp; promo terbaru buat mahasiswa</p>
     </div>
   </div>
+  @if (auth()->user()?->isAdmin())
+    <div class="promo-toolbar"><span class="muted">{{ $promos->count() }} promo</span><a class="btn btn-primary" href="{{ route('promo.create') }}">+ Tambah Promo</a></div>
+  @endif
 
   <nav class="chips" aria-label="Filter kategori promo">
     @foreach ($chips as $val => $label)
@@ -20,7 +23,7 @@
   </nav>
 
   @if ($promos->isNotEmpty())
-    <div class="grid grid-3">
+    <div class="grid grid-3 promo-grid">
       @foreach ($promos as $p)
         <article class="promo-card">
           <div class="promo-head promo-{{ $p['warna'] }}"><h2>{{ $p['judul'] }}</h2></div>
@@ -40,7 +43,12 @@
               <p>{{ $p['deskripsi'] }}</p>
               @if (!empty($p['syarat']))<p class="muted">{{ $p['syarat'] }}</p>@endif
               <p class="promo-date">{!! \App\Support\ManganSekView::ui_icon('calendar') !!} Berlaku sampai {{ \App\Support\ManganSekView::tanggal_id($p['berlaku_sampai']) }}</p>
-              <button type="button" class="btn btn-primary btn-sm" data-close-dialog>Tutup</button>
+              <div class="promo-dialog-actions"><button type="button" class="btn btn-primary btn-sm" data-close-dialog>Tutup</button>
+              @if (auth()->user()?->isAdmin())
+                <a class="btn btn-outline btn-sm" href="{{ route('promo.edit',$p) }}">Edit</a>
+                <form method="post" action="{{ route('promo.destroy',$p) }}" data-confirm="Hapus promo {{ $p['judul'] }}?">@csrf @method('DELETE')<button class="btn btn-sm btn-danger" type="submit">Hapus</button></form>
+              @endif
+              </div>
             </div>
           </dialog>
         </article>

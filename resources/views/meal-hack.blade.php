@@ -5,13 +5,13 @@
 <div class="container">
   <div class="page-head">
     <div>
-      <h1>Meal Hack @if (!auth()->check())<span class="badge badge-green">CRUD: Create</span>@endif</h1>
+      <h1>Meal Hack</h1>
       <p class="sub">Trik makan kenyang tanpa bikin dompet jebol</p>
     </div>
   </div>
 
   @if (auth()->check())
-    <section class="panel" aria-labelledby="judul-bagikan">
+    <section class="panel meal-hack-panel" aria-labelledby="judul-bagikan">
       <h2 id="judul-bagikan">Bagikan meal hack-mu</h2>
 
       @if ($errors->any())
@@ -20,7 +20,7 @@
         </div>
       @endif
 
-      <form class="hack-form" method="post" action="{{ route('meal.store') }}" novalidate>
+      <form class="hack-form" method="post" action="{{ route('meal.store') }}">
         @csrf
         <div class="field">
           <label for="judul-hack">Judul</label>
@@ -32,7 +32,7 @@
         </div>
         <div class="field">
           <label for="hemat">Hemat berapa?</label>
-          <input type="text" id="hemat" name="hemat" inputmode="numeric" value="{{ old('hemat') }}" placeholder="Rp 5.000" required>
+          <input type="number" id="hemat" name="hemat" min="0" max="9999999" value="{{ old('hemat') }}" placeholder="5000" required>
         </div>
         <button type="submit" class="btn btn-primary">Posting</button>
       </form>
@@ -50,7 +50,12 @@
             <h3>{{ $h['judul'] }}</h3>
             <p>{{ $h['deskripsi'] }}</p>
           </div>
-          <span class="badge badge-green">Hemat Rp {{ \App\Support\ManganSekView::rupiah($h['hemat']) }}</span>
+          <div class="hack-side"><span class="badge badge-green">Hemat Rp {{ \App\Support\ManganSekView::rupiah($h['hemat']) }}</span>
+          @if (auth()->user()?->isAdmin())
+            <div class="menu-actions"><a class="btn btn-outline btn-sm" href="{{ route('meal.edit',$h) }}">Edit</a>
+              <form method="post" action="{{ route('meal.destroy',$h) }}" data-confirm="Hapus meal hack ini?">@csrf @method('DELETE')<button class="btn btn-sm btn-danger" type="submit">Hapus</button></form>
+            </div>
+          @endif</div>
         </li>
       @endforeach
     </ul>

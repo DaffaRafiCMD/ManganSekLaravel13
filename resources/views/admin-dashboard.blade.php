@@ -7,7 +7,7 @@
     <div>
       <span class="admin-eyebrow">ADMIN AREA</span>
       <h1>Halo, Admin!</h1>
-      <p>Pantau aktivitas dan konten ManganSek dari satu tempat. Admin dapat mengelola seluruh menu, sedangkan review hanya dapat ditulis oleh pengguna.</p>
+      <p>Pantau aktivitas dan konten ManganSek dari satu tempat. Admin dapat mengelola seluruh menu, promo, Meal Hack, dan review.</p>
     </div>
     <a class="btn btn-primary" href="{{ route('menu.index') }}">Kelola Menu</a>
   </div>
@@ -41,7 +41,7 @@
   </div>
 
   <section class="admin-box" style="margin-top:24px" aria-labelledby="ulasan-admin-title">
-    <div class="admin-box-head"><div><h2 id="ulasan-admin-title">Ulasan pengguna terbaru</h2><p>Admin hanya dapat membaca. Penulisan dan pengubahan ulasan khusus user.</p></div></div>
+    <div class="admin-box-head"><div><h2 id="ulasan-admin-title">Ulasan pengguna terbaru</h2><p>Admin dapat menulis, mengedit, dan menghapus seluruh ulasan.</p></div></div>
     <div class="table-wrap admin-table">
       <table>
         <thead><tr><th>Pengguna</th><th>Tempat</th><th>Rating</th><th>Ulasan</th><th>Lihat</th></tr></thead>
@@ -52,7 +52,7 @@
             <td>{{ $lokasi['nama'] ?? 'Tidak tersedia' }}</td>
             <td>{!! \App\Support\ManganSekView::stars_html((int) $r['rating']) !!}</td>
             <td>{{ $r['komentar'] }}</td>
-            <td><a href="{{ route('review.index',$r->tempat_id) }}">Lihat ulasan</a></td>
+            <td><a href="{{ route('review.index',$r->tempat_id) }}">Kelola ulasan</a></td>
           </tr>
         @endforeach
         @if ($reviews->isEmpty())<tr><td colspan="5">Belum ada ulasan pengguna.</td></tr>@endif

@@ -3,7 +3,7 @@
 @section('active',$tempat->kategori)
 @section('content')
 @php
-$bolehReview=!auth()->user()->isAdmin();
+$bolehReview=in_array(auth()->user()?->role,['admin','user'],true);
 $form=['komentar'=>old('komentar',$editing?->komentar ?? ''),'rating'=>old('rating',$editing?->rating ?? 5)];
 @endphp
 <div class="container">
@@ -12,7 +12,7 @@ $form=['komentar'=>old('komentar',$editing?->komentar ?? ''),'rating'=>old('rati
   <div class="page-head">
     <div>
       <h1>Review</h1>
-      <p class="sub">{{ $bolehReview ? 'Ceritakan pengalamanmu makan di ' : 'Baca pengalaman pengguna di ' }}{{ $tempat['nama'] }}</p>
+      <p class="sub">{{ auth()->user()->isAdmin() ? 'Kelola ulasan untuk ' : 'Ceritakan pengalamanmu makan di ' }}{{ $tempat['nama'] }}</p>
     </div>
   </div>
 
@@ -20,7 +20,7 @@ $form=['komentar'=>old('komentar',$editing?->komentar ?? ''),'rating'=>old('rati
   <section class="compose" aria-label="Tulis review">
     <div class="compose-avatar" aria-hidden="true">{!! \App\Support\ManganSekView::ui_icon('user') !!}</div>
     <div class="compose-main">
-      <h2>{{ auth()->user()->nama }}</h2>
+      <h2>{{ $editing ? ($editing->user?->nama ?? 'Pengguna') : auth()->user()->nama }}</h2>
 
       @if ($errors->any())
         <div class="alert alert-error" role="alert">
@@ -46,18 +46,13 @@ $form=['komentar'=>old('komentar',$editing?->komentar ?? ''),'rating'=>old('rati
       </form>
     </div>
   </section>
-  @else
-    <div class="review-readonly" role="note">
-      <span aria-hidden="true">{!! \App\Support\ManganSekView::ui_icon('shield') !!}</span>
-      <div><strong>Mode lihat ulasan (Admin)</strong><p>Admin dapat melihat ulasan pengguna, tetapi tidak bisa menulis, mengedit, atau menghapus review. Fitur review hanya untuk akun pengguna.</p></div>
-    </div>
   @endif
 
   <h2 class="block-title">Semua Review</h2>
 
   @if ($reviews->isNotEmpty())
     <ul class="review-list">
-      @foreach($reviews as $r) @php $milikku=$bolehReview && (int)$r->user_id === (int)auth()->id(); @endphp
+      @foreach($reviews as $r) @php $bolehKelola=$bolehReview && (auth()->user()->isAdmin() || (int)$r->user_id === (int)auth()->id()); @endphp
         <li class="review">
           <span class="avatar" aria-hidden="true">{!! \App\Support\ManganSekView::ui_icon('user') !!}</span>
           <div class="review-body">
@@ -65,7 +60,7 @@ $form=['komentar'=>old('komentar',$editing?->komentar ?? ''),'rating'=>old('rati
             {!! \App\Support\ManganSekView::stars_html((int) $r['rating']) !!}
             <p>{{ $r['komentar'] }}</p>
           </div>
-          @if ($milikku)
+          @if ($bolehKelola)
             <div class="review-actions">
               <a class="btn btn-primary btn-sm" href="{{ route('review.index',[$tempat,'edit'=>$r->id]) }}">Edit</a>
               <form method="post" action="{{ route('review.destroy',$r) }}" data-confirm="Hapus review ini?">

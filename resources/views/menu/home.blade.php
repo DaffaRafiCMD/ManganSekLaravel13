@@ -24,7 +24,11 @@
 
   <div class="section-head">
     <h2>
-      @if ($q !== '')Hasil untuk “{{ $q }}”@else Rekomendasi untuk Kamu@endif
+      @if ($q !== '')
+        Hasil untuk “{{ $q }}”
+      @else
+        Rekomendasi untuk Kamu
+      @endif
       @if (!auth()->check() && $q === '')<span class="badge badge-green">CRUD: Read</span>@endif
     </h2>
     @if ($q !== '')

@@ -22,7 +22,7 @@
           <div class="menu-card-admin-actions"><a class="btn btn-outline btn-sm" href="{{ route('menu.edit',$t) }}">Edit Menu</a><form method="post" action="{{ route('menu.destroy',$t) }}" data-confirm="Hapus {{ $t['nama'] }} beserta seluruh reviewnya?">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" type="submit">Hapus</button></form></div>
         @endif
         @if ($showReview)
-          <a class="btn {{ (auth()->check() && !auth()->user()->isAdmin()) ? 'btn-primary' : 'btn-outline' }} btn-review" href="{{ route('review.index',$t) }}">{{ (auth()->check() && !auth()->user()->isAdmin()) ? 'Tulis Review' : 'Lihat Ulasan' }}</a>
+          <a class="btn {{ (auth()->check() && !auth()->user()->isAdmin()) ? 'btn-primary' : 'btn-outline' }} btn-review" href="{{ route('review.index',$t) }}">{{ (auth()->check() && !auth()->user()->isAdmin()) ? 'Tulis Review' : 'Kelola Ulasan' }}</a>
         @endif
       </div>
     </article>
